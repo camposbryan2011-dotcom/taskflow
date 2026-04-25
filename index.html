@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TaskFlow Pro</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h2>Login</h2>
+
+    <input id="user" placeholder="Usuário">
+    <input id="pass" type="password" placeholder="Senha">
+
+    <button onclick="handleLogin()">Entrar</button>
+    <button onclick="handleRegister()">Criar conta</button>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    function handleRegister() {
+      const u = user.value;
+      const p = pass.value;
+
+      const res = register(u, p);
+      alert(res.success ? "Conta criada!" : res.message);
+    }
+
+    function handleLogin() {
+      const u = user.value;
+      const p = pass.value;
+
+      const res = login(u, p);
+
+      if (res.success) {
+        window.location.href = "dashboard.html";
+      } else {
+        alert(res.message);
+      }
+    }
+  </script>
+
+</body>
+</html>
