@@ -1,33 +1,37 @@
-function register() {
-  const user = document.getElementById("newUser").value;
-  const pass = document.getElementById("newPass").value;
+const AUTH_KEY = "taskflow_user";
+const SESSION_KEY = "taskflow_session";
 
-  if (!user || !pass) {
-    alert("Preencha tudo!");
-    return;
+function register(user, pass) {
+  const account = Storage.get(AUTH_KEY);
+
+  if (account) {
+    return { success: false, message: "Já existe uma conta" };
   }
 
-  const account = { user, pass };
-  localStorage.setItem("account", JSON.stringify(account));
-
-  alert("Conta criada!");
+  Storage.set(AUTH_KEY, { user, pass });
+  return { success: true };
 }
 
-function login() {
-  const userInput = document.getElementById("loginUser").value;
-  const passInput = document.getElementById("loginPass").value;
+function login(user, pass) {
+  const account = Storage.get(AUTH_KEY);
 
-  const saved = JSON.parse(localStorage.getItem("account"));
-
-  if (!saved) {
-    alert("Nenhuma conta encontrada!");
-    return;
+  if (!account) {
+    return { success: false, message: "Conta não existe" };
   }
 
-  if (userInput === saved.user && passInput === saved.pass) {
-    localStorage.setItem("loggedUser", saved.user);
-    window.location.href = "dashboard.html";
-  } else {
-    alert("Usuário ou senha incorretos!");
+  if (account.user === user && account.pass === pass) {
+    Storage.set(SESSION_KEY, user);
+    return { success: true };
   }
+
+  return { success: false, message: "Credenciais inválidas" };
+}
+
+function logout() {
+  Storage.remove(SESSION_KEY);
+  window.location.href = "index.html";
+}
+
+function getSession() {
+  return Storage.get(SESSION_KEY);
 }
