@@ -1,68 +1,25 @@
-const user = localStorage.getItem("loggedUser");
-
-// proteção de rota
-if (!user) {
-  alert("Você precisa estar logado!");
-  window.location.href = "index.html";
+function getTasks(user) {
+  return Storage.get(user + "_tasks") || [];
 }
 
-// mostra usuário
-document.getElementById("welcome").innerText =
-  "Bem-vindo, " + user;
+function saveTasks(user, tasks) {
+  Storage.set(user + "_tasks", tasks);
+}
 
-// carregar tarefas
-let tasks = JSON.parse(localStorage.getItem(user + "_tasks")) || [];
-
-renderTasks();
-
-function addTask() {
-  const input = document.getElementById("taskInput");
-  const text = input.value;
-
-  if (!text) return;
-
+function addTask(user, text) {
+  const tasks = getTasks(user);
   tasks.push({ text, done: false });
-  save();
-  renderTasks();
-
-  input.value = "";
+  saveTasks(user, tasks);
 }
 
-function renderTasks() {
-  const list = document.getElementById("taskList");
-  list.innerHTML = "";
-
-  tasks.forEach((task, index) => {
-    list.innerHTML += `
-      <li>
-        <span style="text-decoration:${task.done ? "line-through" : "none"}">
-          ${task.text}
-        </span>
-
-        <button onclick="toggle(${index})">✔</button>
-        <button onclick="removeTask(${index})">🗑</button>
-      </li>
-    `;
-  });
+function toggleTask(user, index) {
+  const tasks = getTasks(user);
+  tasks[index].done = !tasks[index].done;
+  saveTasks(user, tasks);
 }
 
-function toggle(i) {
-  tasks[i].done = !tasks[i].done;
-  save();
-  renderTasks();
-}
-
-function removeTask(i) {
-  tasks.splice(i, 1);
-  save();
-  renderTasks();
-}
-
-function save() {
-  localStorage.setItem(user + "_tasks", JSON.stringify(tasks));
-}
-
-function logout() {
-  localStorage.removeItem("loggedUser");
-  window.location.href = "index.html";
+function deleteTask(user, index) {
+  const tasks = getTasks(user);
+  tasks.splice(index, 1);
+  saveTasks(user, tasks);
 }
