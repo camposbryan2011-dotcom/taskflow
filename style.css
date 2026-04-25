@@ -1,27 +1,27 @@
 body {
   font-family: Arial;
-  background: #111;
+  background: #0f0f0f;
   color: white;
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 60px;
 }
 
 .container {
-  width: 300px;
-  background: #222;
+  width: 320px;
+  background: #1c1c1c;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 input {
   width: 100%;
-  margin: 5px 0;
+  margin: 6px 0;
   padding: 8px;
 }
 
 button {
-  margin: 5px;
+  margin: 5px 2px;
   padding: 6px;
   cursor: pointer;
 }
@@ -34,5 +34,5 @@ ul {
 li {
   display: flex;
   justify-content: space-between;
-  margin: 5px 0;
+  margin: 6px 0;
 }
