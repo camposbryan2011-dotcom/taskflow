@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>TaskFlow - Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
@@ -16,12 +15,45 @@
     <hr>
 
     <input id="taskInput" placeholder="Nova tarefa">
-    <button onclick="addTask()">Adicionar</button>
+    <button onclick="add()">Adicionar</button>
 
     <ul id="taskList"></ul>
 
   </div>
 
-  <script src="tasks.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/ui.js"></script>
+
+  <script>
+    const user = getSession();
+
+    if (!user) {
+      window.location.href = "index.html";
+    }
+
+    document.getElementById("welcome").innerText =
+      "Bem-vindo, " + user;
+
+    renderTasks(user);
+
+    function add() {
+      addTask(user, taskInput.value);
+      taskInput.value = "";
+      renderTasks(user);
+    }
+
+    function handleToggle(i) {
+      toggleTask(user, i);
+      renderTasks(user);
+    }
+
+    function handleDelete(i) {
+      deleteTask(user, i);
+      renderTasks(user);
+    }
+  </script>
+
 </body>
 </html>
